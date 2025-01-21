@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.event_sorter import sort_event
+from handlers.photos_handler import process_photo_event
 from client.flaskclient import run_flask_app
 
 app = Flask(__name__)
@@ -38,6 +39,9 @@ def webhook():
         
         # Sort the event and process asynchronously
         if event:
+            event, outp = sort_event(event)
+            if outp == "photo":
+                executor.submit(process_photo_event, event)
             executor.submit(sort_event, event)
             return "Event sorting initiated", 200
         

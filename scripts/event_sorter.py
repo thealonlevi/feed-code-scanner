@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from handlers.photos_handler import process_photo_event
 
 def sort_event(event):
     """
@@ -14,8 +10,10 @@ def sort_event(event):
                 
                 if item_type == "photo":
                     print("Photo event detected. Routing to photo handler...")
-                    process_photo_event(change["value"])
+                    return change['value'], "photo"
                 else:
                     print(f"Unhandled event type: {item_type}")
+                    return event, "Unknown"
     except Exception as e:
         print(f"Error sorting event: {e}")
+        return event, "Unknown"
