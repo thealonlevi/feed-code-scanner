@@ -2,9 +2,11 @@ import boto3
 from botocore.exceptions import ClientError
 
 # Initialize the DynamoDB resource
-dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
-table_name = "scanned-codes"
-table = dynamodb.Table(table_name)
+def initializeAWS():
+    dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
+    table_name = "scanned-codes"
+    table = dynamodb.Table(table_name)
+    return table
 
 
 def add_event_to_code(code, event):
@@ -13,6 +15,7 @@ def add_event_to_code(code, event):
     If the code does not exist, create a new item with the event.
     """
     try:
+        table = initializeAWS()
         # Update the item (or create it if it doesn't exist)
         response = table.update_item(
             Key={"codes": code},  # Ensure this matches the table's key schema
@@ -33,6 +36,7 @@ def get_events_by_code(code):
     Retrieve all events associated with a code from the DynamoDB table.
     """
     try:
+        table=initializeAWS()
         response = table.get_item(Key={"codes": code})  # Ensure this matches the table's key schema
         if "Item" in response:
             return response["Item"].get("events", [])
