@@ -6,7 +6,7 @@ import os
 
 # Load configuration
 try:
-    with open('config.json', 'r') as config_file:
+    with open('config/config.json', 'r') as config_file:
         config = json.load(config_file)
 except (FileNotFoundError, json.JSONDecodeError) as e:
     print(f"Error loading configuration: {e}")
