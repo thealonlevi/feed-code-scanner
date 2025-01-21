@@ -15,11 +15,11 @@ def add_event_to_code(code, event):
     try:
         # Update the item (or create it if it doesn't exist)
         response = table.update_item(
-            Key={"codes": {"S": code}},
-            UpdateExpression="SET events = list_append(if_not_exists(events, :empty_list), :event)",
+            Key={"codes": code},  # Ensure this matches the table's key schema
+            UpdateExpression="SET events = list_append(if_not_exists(events, :empty_list), :new_event)",
             ExpressionAttributeValues={
-                ":empty_list": {"L": []},
-                ":event": {"L": [{"M": event}]}
+                ":empty_list": [],
+                ":new_event": [event]
             },
             ReturnValues="UPDATED_NEW"
         )
@@ -33,9 +33,9 @@ def get_events_by_code(code):
     Retrieve all events associated with a code from the DynamoDB table.
     """
     try:
-        response = table.get_item(Key={"codes": {"S": code}})
+        response = table.get_item(Key={"codes": code})  # Ensure this matches the table's key schema
         if "Item" in response:
-            return response["Item"].get("events", {}).get("L", [])
+            return response["Item"].get("events", [])
         else:
             print(f"No events found for code {code}.")
             return []
@@ -50,26 +50,26 @@ if __name__ == "__main__":
     test_event = {
         "entry": [
             {
-                "id": {"S": "517161164821567"},
-                "time": {"N": "1737458657"},
+                "id": "517161164821567",
+                "time": 1737458657,
                 "changes": [
                     {
                         "value": {
-                            "from": {"id": {"S": "517161164821567"}, "name": {"S": "Pituah"}},
-                            "link": {"S": "https://example.com/image.jpg"},
-                            "post_id": {"S": "517161164821567_122100491216739916"},
-                            "created_time": {"N": "1737458653"},
-                            "item": {"S": "photo"},
-                            "photo_id": {"S": "122100491162739916"},
-                            "published": {"N": "1"},
-                            "verb": {"S": "add"}
+                            "from": {"id": "517161164821567", "name": "Pituah"},
+                            "link": "https://example.com/image.jpg",
+                            "post_id": "517161164821567_122100491216739916",
+                            "created_time": 1737458653,
+                            "item": "photo",
+                            "photo_id": "122100491162739916",
+                            "published": 1,
+                            "verb": "add"
                         },
-                        "field": {"S": "feed"}
+                        "field": "feed"
                     }
                 ]
             }
         ],
-        "object": {"S": "page"}
+        "object": "page"
     }
 
     # Add the event to the code
