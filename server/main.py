@@ -7,9 +7,6 @@ from scripts.event_sorter import sort_event
 from scripts.photos_handler import process_photo_event
 import boto3
 from botocore.exceptions import ClientError
-import logging
-logging.basicConfig(level=logging.DEBUG)
-boto3.set_stream_logger('botocore', level=logging.DEBUG)
 
 dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
 table_name = "scanned-codes"
