@@ -1,0 +1,18 @@
+# Exclude the virtual environment directory
+.venv/
+
+# Exclude the scripts folder
+scripts/
+archive/
+
+# Exclude the preprocessed image file
+preprocessed_image.png
+
+# Optional: Exclude all log files
+*.log
+
+# Optional: Exclude __pycache__ folders (Python compiled files)
+__pycache__/
+
+# Optional: Exclude .env files (environment variables)
+.env
