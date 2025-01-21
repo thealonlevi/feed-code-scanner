@@ -10,6 +10,8 @@ def add_event_to_code(code, event, table):
     try:
         print("HELLO2")
         # Update the item (or create it if it doesn't exist)
+        print(f"Code: {code}")
+        print(f"Event: {event}")
         response = table.update_item(
             Key={"codes": code},  # Ensure this matches the table's key schema
             UpdateExpression="SET events = list_append(if_not_exists(events, :empty_list), :new_event)",
@@ -18,7 +20,7 @@ def add_event_to_code(code, event, table):
                 ":new_event": [event]
             },
             ReturnValues="UPDATED_NEW"
-        ) 
+        ) # THE ISSUE IS HERE, HOW DO WE DEBUG THIS??
         print("HELLO4")
         print(f"Event added to code {code}. Updated item: {response['Attributes']}")
     except ClientError as e:
