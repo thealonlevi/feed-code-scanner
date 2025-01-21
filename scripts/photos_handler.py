@@ -21,9 +21,9 @@ def detect_embedded_code(extracted_text):
     match = re.search(code_pattern, extracted_text)
 
     if match:
-        return f"Embedded Code Found: {match.group(0)}"
+        return f"{match.group(0)}"
     else:
-        return "No embedded code detected in the text."
+        return None
 
 def process_photo_event(event):
     """
@@ -56,7 +56,12 @@ def process_photo_event(event):
                 extracted_text = pytesseract.image_to_string(img)
                 print("Extracted Text from Image:")
                 print(extracted_text)
-                print("DETECTED CODE: ", detect_embedded_code(extracted_text))
+                detected_code = detect_embedded_code(extracted_text)
+                if not detected_code is None:
+                    print("DETECTED CODE: ", detected_code)
+                else:
+                    print("Didn't detect code.")
+                
 
     except Exception as e:
         print(f"Error processing photo event: {e}")
