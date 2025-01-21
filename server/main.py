@@ -5,11 +5,11 @@ import sys
 import os
 
 # Get the base directory of the project
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Load configuration
 try:
-    config_path = os.path.join(BASE_DIR, "config", "config.json")
+    config_path = os.path.join(BASE_DIR, "..", "config", "config.json")
     with open(config_path, 'r') as config_file:
         config = json.load(config_file)
 except (FileNotFoundError, json.JSONDecodeError) as e:
@@ -25,7 +25,7 @@ HOST = config.get("host", "0.0.0.0")
 PORT = config.get("port", 443)
 
 # Add project-specific imports
-sys.path.append(BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR, ".."))
 from server.methods.get import GetMethod
 from server.methods.post import PostMethod
 
