@@ -9,13 +9,17 @@ def webhook():
     """
     if request.method == 'GET':
         print("GET request received.")
+        print("Request Headers:")
+        print(request.headers)  # Print request headers
+        print("Query Parameters:")
+        print(request.args)  # Print all query parameters
+        
         # Verification endpoint for webhook setup
         mode = request.args.get('hub.mode')
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
         
-        print(mode, token, challenge)
-        print(request.json)
+        print(f"Mode: {mode}, Token: {token}, Challenge: {challenge}")
         
         VERIFY_TOKEN = "my_custom_verify_token_12345"  # Replace with your verification token
 
@@ -27,9 +31,13 @@ def webhook():
             return "Forbidden", 403
     
     if request.method == 'POST':
-        # Handle webhook event
+        print("POST request received.")
+        print("Request Headers:")
+        print(request.headers)  # Print request headers
+        print("Request Body:")
         event = request.json
-        print("Webhook Event Received:", event)  # Print the event
+        print(event)  # Print the JSON body of the POST request
+        
         return "Event received", 200
 
 if __name__ == '__main__':
