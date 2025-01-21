@@ -56,7 +56,7 @@ def process_photo_event(event):
                 extracted_text = pytesseract.image_to_string(img)
                 print("Extracted Text from Image:")
                 print(extracted_text)
-                detect_embedded_code(extracted_text)
+                print("DETECTED CODE: ", detect_embedded_code(extracted_text))
 
     except Exception as e:
         print(f"Error processing photo event: {e}")
