@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from handlers.photos_handler import process_photo_event
 
 def sort_event(event):
