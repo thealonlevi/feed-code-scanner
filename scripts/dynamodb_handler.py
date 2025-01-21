@@ -14,7 +14,7 @@ def add_event_to_code(code, event):
     try:
         # Update the item (or create it if it doesn't exist)
         response = table.update_item(
-            Key={"code": code},
+            Key={"codes": code},
             UpdateExpression="SET events = list_append(if_not_exists(events, :empty_list), :event)",
             ExpressionAttributeValues={
                 ":empty_list": [],
