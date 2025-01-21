@@ -1,8 +1,13 @@
 import boto3
 from botocore.exceptions import ClientError
+import boto3
+from botocore.exceptions import ClientError
 
+dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
+table_name = "scanned-codes"
+table = dynamodb.Table(table_name)
 
-def add_event_to_code(code, event, table):
+def add_event_to_code(code, event):
     """
     Add an event to a code in the DynamoDB table.
     If the code does not exist, create a new item with the event.

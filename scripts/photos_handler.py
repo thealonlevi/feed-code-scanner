@@ -26,7 +26,7 @@ def detect_embedded_code(extracted_text):
     else:
         return None
 
-def process_photo_event(event, table):
+def process_photo_event(event):
     """
     Process the photo event, download the image, extract text, and store the code in DynamoDB.
     """
@@ -63,7 +63,7 @@ def process_photo_event(event, table):
                     print(f"DETECTED CODE: {detected_code}")
                     
                     # Store the code and event in DynamoDB
-                    add_event_to_code(detected_code, event, table)
+                    add_event_to_code(detected_code, event)
                     print(f"Stored event under code {detected_code} in DynamoDB.")
                 else:
                     print("No valid code detected in the image.")

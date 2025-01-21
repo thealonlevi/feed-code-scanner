@@ -5,12 +5,6 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.event_sorter import sort_event
 from scripts.photos_handler import process_photo_event
-import boto3
-from botocore.exceptions import ClientError
-
-dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
-table_name = "scanned-codes"
-table = dynamodb.Table(table_name)
 
 app = Flask(__name__)
 executor = ThreadPoolExecutor(max_workers=5)  # Adjust the number of workers as needed
@@ -46,7 +40,7 @@ def webhook():
         if event:
             outp = sort_event(event)
             if outp == "photo":
-                executor.submit(process_photo_event, event, table)
+                executor.submit(process_photo_event, event)
             executor.submit(sort_event, event)
             return "Event sorting initiated", 200
         
