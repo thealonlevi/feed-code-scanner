@@ -8,6 +8,7 @@ def add_event_to_code(code, event):
     If the code does not exist, create a new item with the event.
     """
     try:
+        print("HELLO2")
         dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
         table_name = "scanned-codes"
         table = dynamodb.Table(table_name)
@@ -23,6 +24,7 @@ def add_event_to_code(code, event):
         )
         print(f"Event added to code {code}. Updated item: {response['Attributes']}")
     except ClientError as e:
+        print("HELLO")
         print(f"Error adding event: {e.response['Error']['Message']}")
 
 
