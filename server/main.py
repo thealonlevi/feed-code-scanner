@@ -8,6 +8,7 @@ def webhook():
     Handle incoming webhook requests.
     """
     if request.method == 'GET':
+        print(request.json)
         # Verification endpoint for webhook setup
         mode = request.args.get('hub.mode')
         token = request.args.get('hub.verify_token')
