@@ -5,7 +5,6 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.event_sorter import sort_event
 from scripts.photos_handler import process_photo_event
-from client.flaskclient import run_flask_app
 
 app = Flask(__name__)
 executor = ThreadPoolExecutor(max_workers=5)  # Adjust the number of workers as needed
@@ -51,5 +50,8 @@ def webhook():
         return "Method not allowed", 405
 
 if __name__ == '__main__':
-    # Use flaskclient to run the Flask app
-    run_flask_app(app=app)
+    # Run Flask app with SSL certificate
+    app.run(host='0.0.0.0', port=443, ssl_context=(
+        '/etc/letsencrypt/live/wolly-security.io/fullchain.pem',
+        '/etc/letsencrypt/live/wolly-security.io/privkey.pem'
+    ))
