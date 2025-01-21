@@ -2,7 +2,6 @@
 .venv/
 
 # Exclude the scripts folder
-scripts/
 archive/
 
 # Exclude the preprocessed image file
