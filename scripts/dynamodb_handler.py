@@ -12,6 +12,7 @@ def add_event_to_code(code, event):
         dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
         table_name = "scanned-codes"
         table = dynamodb.Table(table_name)
+        print("HELLO3")
         # Update the item (or create it if it doesn't exist)
         response = table.update_item(
             Key={"codes": code},  # Ensure this matches the table's key schema
@@ -22,6 +23,7 @@ def add_event_to_code(code, event):
             },
             ReturnValues="UPDATED_NEW"
         )
+        print("HELLO4")
         print(f"Event added to code {code}. Updated item: {response['Attributes']}")
     except ClientError as e:
         print("HELLO")
