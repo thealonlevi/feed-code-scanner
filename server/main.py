@@ -61,5 +61,5 @@ def webhook():
         return f"Method {request.method} not allowed.", 405
 
 if __name__ == '__main__':
-    # Run the Flask app on port 8080
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    # Run the Flask app with HTTPS using the provided certificate and key
+    app.run(host='0.0.0.0', port=8080, debug=True, ssl_context=('ssl/server.crt', 'ssl/server.key'))
