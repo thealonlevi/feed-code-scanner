@@ -10,10 +10,10 @@ def sort_event(event):
                 
                 if item_type == "photo":
                     print("Photo event detected. Routing to photo handler...")
-                    return change['value'], "photo"
+                    return "photo"
                 else:
                     print(f"Unhandled event type: {item_type}")
-                    return event, "Unknown"
+                    return "Unknown"
     except Exception as e:
         print(f"Error sorting event: {e}")
-        return event, "Unknown"
+        return "Unknown"

@@ -38,7 +38,7 @@ def webhook():
         
         # Sort the event and process asynchronously
         if event:
-            event, outp = sort_event(event)
+            outp = sort_event(event)
             if outp == "photo":
                 executor.submit(process_photo_event, event)
             executor.submit(sort_event, event)
