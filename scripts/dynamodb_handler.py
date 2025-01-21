@@ -2,17 +2,13 @@ import boto3
 from botocore.exceptions import ClientError
 
 
-def add_event_to_code(code, event):
+def add_event_to_code(code, event, table):
     """
     Add an event to a code in the DynamoDB table.
     If the code does not exist, create a new item with the event.
     """
     try:
         print("HELLO2")
-        dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
-        table_name = "scanned-codes"
-        table = dynamodb.Table(table_name)
-        print("HELLO3")
         # Update the item (or create it if it doesn't exist)
         response = table.update_item(
             Key={"codes": code},  # Ensure this matches the table's key schema
@@ -22,7 +18,7 @@ def add_event_to_code(code, event):
                 ":new_event": [event]
             },
             ReturnValues="UPDATED_NEW"
-        )
+        ) 
         print("HELLO4")
         print(f"Event added to code {code}. Updated item: {response['Attributes']}")
     except ClientError as e:
