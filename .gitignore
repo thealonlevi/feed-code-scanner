@@ -7,6 +7,7 @@ archive/
 
 # Exclude the preprocessed image file
 preprocessed_image.png
+server/test.py
 
 # Optional: Exclude all log files
 *.log
