@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from scripts.event_sorter import sort_event
-from scripts.photos_handler import process_photo_event
+from handlers.photos_handler import process_photo_event
 
 app = Flask(__name__)
 executor = ThreadPoolExecutor(max_workers=5)  # Adjust the number of workers as needed

@@ -1,30 +1,12 @@
 import requests
 from PIL import Image
 from io import BytesIO
-import pytesseract
-import re
-from scripts.dynamodb_handler import add_event_to_code
-
-def detect_embedded_code(extracted_text):
-    """
-    Detect an embedded code in the extracted text.
-
-    Args:
-        extracted_text (str): The text extracted from an image.
-
-    Returns:
-        str: The detected code if found, otherwise None.
-    """
-    # Define the regex for the embedded code
-    code_pattern = r"\b(?=[A-Z0-9]{6}\b)(?=(?:.*[A-Z]){2,})(?=(?:.*\d){2,})[A-Z0-9]+\b"
-
-    # Search for the code in the text
-    match = re.search(code_pattern, extracted_text)
-
-    if match:
-        return f"{match.group(0)}"
-    else:
-        return None
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from handlers.dynamodb_handler import add_event_to_code
+from scripts.text_extraction import detect_text
+from scripts.code_detection import detect_embedded_code
 
 def process_photo_event(event):
     """
@@ -53,12 +35,11 @@ def process_photo_event(event):
                 img = Image.open(BytesIO(response.content))
 
                 # Perform OCR to extract text
-                extracted_text = pytesseract.image_to_string(img)
-                print("Extracted Text from Image:")
-                print(extracted_text)
+                extracted_text = detect_text(img)
                 
                 # Detect the embedded code
                 detected_code = detect_embedded_code(extracted_text)
+                
                 if detected_code:
                     print(f"DETECTED CODE: {detected_code}")
                     
