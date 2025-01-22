@@ -135,19 +135,9 @@ Open the file `config/config.json` and add the required values. For instance:
    - The app will typically listen on port **8080** (depending on your configuration).
 
 2. **Access the Application**:
-   - If you’re using HTTP, visit:  
-     `http://<your-server-ip>:8080/`
-   - If you’re using HTTPS (and Flask SSL config), visit:  
-     `https://<your-server-ip>:8080/`
-
----
-
-## Notes on `PostMethod` and Event Sorting
-
-- Within `server/methods/post.py`, you’ll see that `sort_event(event)` is called **twice**:
-  - **Synchronously** to determine the type of event (e.g., `"photo"`).
-  - **Asynchronously** (using `executor.submit(sort_event, event)`) possibly for deeper or secondary processing.
-- If `sort_event(event)` returns `"photo"`, the code also asynchronously calls `process_photo_event(event)` to handle the actual image download, OCR, and code detection.
+   - Facebook API will communicate only through HTTPS (Flask SSL config is required), visit:  
+     `https://<your-server-ip>:8080/` <- Advised to use a Domain with a SSL certificate, and implement an A record pointing to your server's IP,
+     and then using that domain as the endpoint which you provide to Facebook.
 
 ---
 
