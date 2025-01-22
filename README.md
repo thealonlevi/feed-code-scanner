@@ -172,14 +172,39 @@ Open the file `config/config.json` and add the required values. For instance:
 
 This completes your setup for **Feed Code Monitor**!
 
-## Potential Vulnerabilities on transition to PRODUCTION
+## Potential Vulnerabilities on Transition to Production
 
-1. scripts/text_extraction.py extracts texts from images it receives, however, it does not do it very thoroughly, and it often makes mistakes.
-   SOLUTION: Needs to be recreated in a way where it can consistently and accurately extract the embedded code.
-2. [ON-CLOUD] AWS Lambda Function postImpressionScript(serverless) makes a request for every post under every code stored in the "scanned-codes"
-   DynamoDB. The more posts that accumulate there, the more likely this script is to crash or cause Facebook's API to rate-limit you.
-   SOLUTION: Needs to be recreated, preferably on the server and not on the cloud, and it needs to be configured to make the requests based on
-   the defined limits of Facebook's API, and perhaps send out the requests asynchronously(within the liimts of Facebook's API) to save time
-   while gathering the information, as this is a long task(depending on the amount of posts).
-   ADVISE: Systematically prioritize posts to gather information for, in a case of a queue of tasks, and create a manager which manages
-   instances which are making the requests and knows which requests to prioritize in the queue, and which to not. 
+### 1. OCR Inaccuracy in `scripts/text_extraction.py`
+- **Issue**:  
+  The current text extraction process is not very thorough. It often makes mistakes when extracting text from images, potentially leading to inaccurate or missed embedded codes.
+
+- **Solution**:  
+  Rebuild or refactor `scripts/text_extraction.py` to ensure more robust and consistent OCR. This may involve:
+  - Improving preprocessing steps (e.g., image binarization, noise reduction).
+  - Exploring more advanced OCR libraries or models.
+  - Implementing error-handling and retry strategies to handle edge cases.
+
+---
+
+### 2. Potential Overload or Rate-Limiting with the AWS Lambda `postImpressionScript`
+- **Issue**:  
+  The on-cloud Lambda function (`postImpressionScript`) sends requests to the Facebook API for **every** post under **every** code in the `scanned-codes` DynamoDB table. As the table grows, this approach can:
+  - Become time-consuming and expensive (in terms of Lambda execution time).
+  - Lead to **rate-limiting** or throttling by the Facebook API.
+  - Increase the risk of failure or partial data collection if the Lambda times out or crashes.
+
+- **Solution**:  
+  Move this process **off** Lambda and manage it on the main server (or another suitable platform) that can:
+  - Track and respect Facebook’s API rate limits.
+  - Send requests **asynchronously** in smaller batches.
+  - Use a **queue** or job manager to prioritize and schedule these requests.
+
+- **Advice**:  
+  - Implement a **task queue** (e.g., Celery, RQ, or a custom job manager) to handle post impression checks in an organized and prioritized manner.
+  - Ensure the system can **dynamically prioritize** certain posts or codes when resources are limited.
+  - Provide real-time or periodic monitoring of these tasks to handle failures or retries gracefully.
+
+---
+
+By addressing these vulnerabilities and recommendations, you can better prepare **Feed Code Monitor** for a production environment where scalability, reliability, and accuracy become crucial.
+
