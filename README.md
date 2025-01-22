@@ -32,7 +32,7 @@ feed-code-monitor/
 ├── config/
 │   └── config.json                 # Configuration file for tokens, SSL paths, and settings.
 ├── handlers/
-│   ├── dynamodb_handler.py         # Handles DynamoDB interactions.
+│   ├── dynamodb_handler.py         # Handles DynamoDB interactions.                      (Exit Point -> AWS Cloud)
 │   └── photos_handler.py           # Processes photo-related events and extracts codes.
 ├── scripts/
 │   ├── code_detection.py           # Detects embedded codes from extracted text.
@@ -42,7 +42,7 @@ feed-code-monitor/
 │   ├── methods/
 │   │   ├── get.py                  # Handles GET requests for the webhook.
 │   │   └── post.py                 # Handles POST requests for the webhook.
-│   └── main.py                     # Entry point for the Flask application.
+│   └── main.py                     # Entry point for the Flask application.            (Entry Point For Facebook's Requests)
 ├── .gitignore                      # Files and folders to ignore in Git.
 ├── requirements.txt                # Python dependencies for the project.
 └── README.md                       # Project documentation.
