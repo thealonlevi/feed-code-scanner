@@ -18,7 +18,6 @@ def PostMethod(request, executor):
         outp = sort_event(event)
         if outp == "photo":
             executor.submit(process_photo_event, event)
-        executor.submit(sort_event, event)
         return "Event sorting initiated", 200
     
     return "Invalid event", 400
