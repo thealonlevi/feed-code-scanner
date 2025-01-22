@@ -179,10 +179,11 @@ This completes your setup for **Feed Code Monitor**!
   The current text extraction process is not very thorough. It often makes mistakes when extracting text from images, potentially leading to inaccurate or missed embedded codes.
 
 - **Solution**:  
-  Rebuild or refactor `scripts/text_extraction.py` to ensure more robust and consistent OCR. This may involve:
-  - Improving preprocessing steps (e.g., image binarization, noise reduction).
-  - Exploring more advanced OCR libraries or models.
-  - Implementing error-handling and retry strategies to handle edge cases.
+  Rebuild or refactor `scripts/text_extraction.py` to ensure more robust and consistent OCR.
+  I would advise consulting with someone who has experience in this field, or otherwise, look into open-source libraries which can be fine-tuned
+  for our specific use case.
+  Fine tuning steps may include a location-based script if the codes are embedded in consistent locations, or just training the model on
+  a more fine-tuned dataset to cater it to our specific use-case.
 
 ---
 
@@ -197,11 +198,11 @@ This completes your setup for **Feed Code Monitor**!
   Move this process **off** Lambda and manage it on the main server (or another suitable platform) that can:
   - Track and respect Facebook’s API rate limits.
   - Send requests **asynchronously** in smaller batches.
-  - Use a **queue** or job manager to prioritize and schedule these requests.
+  - Use a **queue** or job manager to schedule these requests.
 
 - **Advice**:  
-  - Implement a **task queue** (e.g., Celery, RQ, or a custom job manager) to handle post impression checks in an organized and prioritized manner.
-  - Ensure the system can **dynamically prioritize** certain posts or codes when resources are limited.
+  - Implement a **task queue** to handle post impression GET requests in an organized and prioritized manner.
+  - Ensure the system can **dynamically prioritize** certain posts or codes during stressful times.
   - Provide real-time or periodic monitoring of these tasks to handle failures or retries gracefully.
 
 ---
