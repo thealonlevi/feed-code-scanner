@@ -55,11 +55,11 @@ feed-code-monitor/
 ### 1. Create an Inbound Rule for Port 8080 (TCP)
 
 - Update your server’s security/firewall settings to **allow inbound traffic** on port **8080** (TCP).  
-- If you’re on AWS, this means updating your **Security Group** to include a rule for inbound traffic on port **8080**.
+- If you’re on AWS, this means updating your **Security Group** to include a rule for inbound traffic on port **8080** (TCP).
 
 ### 2. Create or Obtain SSL Certificates
 
-- If you plan to serve your application over HTTPS, you’ll need valid SSL certificates.
+- This application has to run over HTTPS, thus, you’ll need valid SSL certificates.
 - Store the certificate (`.crt`) and key (`.key`) paths in the `config/config.json` file under something like:
 
 ```json
@@ -69,8 +69,6 @@ feed-code-monitor/
   ...
 }
 ```
-
-- If you do not require HTTPS, you can ignore or leave these fields blank, depending on your setup.
 
 ### 3. Install AWS CLI & Configure It
 
@@ -83,7 +81,7 @@ feed-code-monitor/
    ```bash
    sudo aws configure
    ```
-   - Enter your AWS **Access Key**, **Secret Access Key**, default region, and output format (e.g., `json`) when prompted.
+   - Enter your AWS **Access Key**, **Secret Access Key**, default region, and output format (`json`) when prompted.
    - This is necessary so the application can access AWS DynamoDB.
 
 ### 4. Set Up Python Virtual Environment and Dependencies
@@ -150,13 +148,6 @@ Open the file `config/config.json` and add the required values. For instance:
 - **Facebook Webhook Verification**:
   - Ensure your **webhook callback** is set to your server’s `/webhook` endpoint (or similar) in the Facebook app settings.
   - Use the same **verification token** you set in your `config.json`.
-- **Production Use**:
-  - For production, consider placing this Flask app behind a web server like **Nginx** or **Apache** and possibly use **Gunicorn** or **uWSGI**.
-  - For example:
-    ```bash
-    sudo venv/bin/gunicorn --bind 0.0.0.0:8080 main:app
-    ```
-  - Terminate SSL in Nginx/Apache for better performance and easier certificate management.
 
 ---
 
