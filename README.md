@@ -109,15 +109,14 @@ Open the file `config/config.json` and add the required values. For instance:
 
 ```json
 {
-  "ssl_certificate_path": "/path/to/ssl_certificate.crt",
-  "ssl_key_path": "/path/to/ssl_key.key",
-  "facebook_verification_token": "<your_facebook_verification_token>",
-  "facebook_page_token": "<your_facebook_page_token>",
-  "aws_region": "us-east-1",
-  "dynamodb_tables": {
-    "scanned_codes": "scanned-codes",
-    "variables": "variables"
-  }
+    "verify_token": "my_custom_verify_token_12345",
+    "max_workers": 5,
+    "ssl": {
+        "cert": "/etc/letsencrypt/live/wolly-security.io/fullchain.pem",
+        "key": "/etc/letsencrypt/live/wolly-security.io/privkey.pem"
+    },
+    "host": "0.0.0.0",
+    "port": 443
 }
 ```
 
