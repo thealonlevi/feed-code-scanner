@@ -171,3 +171,15 @@ Open the file `config/config.json` and add the required values. For instance:
 6. **Monitor logs** to ensure photo events, OCR, and DynamoDB operations are working as intended.
 
 This completes your setup for **Feed Code Monitor**!
+
+## Potential Vulnerabilities on transition to PRODUCTION
+
+1. scripts/text_extraction.py extracts texts from images it receives, however, it does not do it very thoroughly, and it often makes mistakes.
+   SOLUTION: Needs to be recreated in a way where it can consistently and accurately extract the embedded code.
+2. [ON-CLOUD] AWS Lambda Function postImpressionScript(serverless) makes a request for every post under every code stored in the "scanned-codes"
+   DynamoDB. The more posts that accumulate there, the more likely this script is to crash or cause Facebook's API to rate-limit you.
+   SOLUTION: Needs to be recreated, preferably on the server and not on the cloud, and it needs to be configured to make the requests based on
+   the defined limits of Facebook's API, and perhaps send out the requests asynchronously(within the liimts of Facebook's API) to save time
+   while gathering the information, as this is a long task(depending on the amount of posts).
+   ADVISE: Systematically prioritize posts to gather information for, in a case of a queue of tasks, and create a manager which manages
+   instances which are making the requests and knows which requests to prioritize in the queue, and which to not. 
